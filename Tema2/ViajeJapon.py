@@ -46,10 +46,10 @@ def sol(n,m,grafo,grafo_inv):
 n,m=map(int,input().strip().split())
 grafo=[]
 grafo_inv=[]
-for i in range(n):
+for i in range(0,n):
     grafo.append([])
     grafo_inv.append([])
-for i in range(m):
+for i in range(0,m):
     a,b=map(int,input().strip().split())
     grafo[a].append(b)
     grafo_inv[b].append(a)
