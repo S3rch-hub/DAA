@@ -12,7 +12,7 @@ def bfs_aux(g,v,visited):
         aux = q.popleft()
         for w in g[aux]:
             if not visited[w]:
-                q.appendleft(w)
+                q.append(w)
                 visited[w]= True
 
 
@@ -21,16 +21,17 @@ def bfs_aux(g,v,visited):
 
 def bfs(g):
     n = len(g)
-    visited = set()
     visited= [False] * n
-
-    for v in range(0,n):
-        ciudadDestino = n
-        if not visited[v]:
-            bfs_aux(g,v,visited)
+    bfs_aux(g,0,visited)
+    return all(visited)
 
 
-
+def sol(n,m,grafo,grafo_inv):
+    if not bfs(grafo):
+        return "Cambia de itinerario"
+    if not bfs(grafo_inv):
+        return "Cambia de itinerario"
+    return "PERFECTO"
 
 
 
@@ -43,13 +44,15 @@ def bfs(g):
 #Data Definition
 
 n,m=map(int,input().strip().split())
-g=[]
+grafo=[]
+grafo_inv=[]
 for i in range(n):
-    g.append([])
+    grafo.append([])
+    grafo_inv.append([])
 for i in range(m):
     a,b=map(int,input().strip().split())
-    g[a].append(b)
+    grafo[a].append(b)
+    grafo_inv[b].append(a)
 
 
-print(g)
-bfs(g)
+print(sol(n,m,grafo,grafo_inv))
