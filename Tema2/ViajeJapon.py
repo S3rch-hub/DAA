@@ -28,9 +28,9 @@ def bfs(g):
 
 def sol(n,m,grafo,grafo_inv):
     if not bfs(grafo):
-        return "Cambia de itinerario"
+        return "CAMBIA EL ITINERARIO"
     if not bfs(grafo_inv):
-        return "Cambia de itinerario"
+        return "CAMBIA DE ITINERARIO"
     return "PERFECTO"
 
 
