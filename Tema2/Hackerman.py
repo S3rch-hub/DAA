@@ -4,14 +4,28 @@ from collections import deque
 
 #BFS algorithm definition
 
-
-def eliminar_nodo(g,v):
+""" def eliminar_nodo(g,v):
     grafo_copia = copy.deepcopy(g)
     grafo_copia[v]= []
     n= len(g)
     for j in range(n):
         if v in grafo_copia[j]:
             grafo_copia[j].remove(v)
+    return grafo_copia
+"""
+
+def eliminar_nodo(g,v):
+    n=len(g)
+    grafo_copia=[]
+    for i in range(n):
+        grafo_copia.append([])
+    for z in range(n):
+        for j in g[z]:
+            grafo_copia[z].append(j)
+    grafo_copia[v]=[]
+    for k in range(n):
+        if v in grafo_copia[k]:
+            grafo_copia[k].remove(v)
     return grafo_copia
 
 def bfs_aux(g,start,visited):
@@ -49,7 +63,7 @@ n,m = map(int,input().strip().split())
 g=[]
 costeReparacion=[]
 for i in range(n):
-    coste=int(input(f"Introduce el coste de reparar el nodo {i}:"))
+    coste=int(input())
     costeReparacion.append(coste)
     g.append([])
 for j in range(m):
