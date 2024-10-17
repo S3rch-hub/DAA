@@ -1,32 +1,42 @@
 from collections import deque
 
 #BFS algorithimic (Busqueda en anchura)
-def bfsAux(g, visited, v):
-    q = deque()
-    visited[v] = True
-    q.append(v)
-    while q:
-        aux = q.popleft()
-        for adj in g[aux]:
-            if not visited[adj]:
-                q.append(adj)
-                visited[adj] = True
 
-
-def bfs(g):
+def bfs(g,x,y,turno):
     n = len(g)
-    visited = [False] * n
-    ncc= 0
-    for v in range(0, n):
-        if not visited[v]:
-            bfsAux(g, visited, v)
-            ncc += 1
-    return ncc
+    distancia_min = 0
+    if g[x][y]== 2:
+        return distancia_min
+    encontrado=0
+    q =deque()
+    while not encontrado:
+        if turno %2 ==1:
+
+            q.append((x+1,y))
+            q.append((x,y+1))
+            while q:
+                x,y =q.popleft()
+                distancia_min += 1
+                if g[x][y] == 2:
+                    encontrado =1
+
+
+
+
+
+
+
 
 #Data definition
 
 n,m = map(int,input().strip().split())
 g=[]
-for i in range (n):
-    g.append([])
+for i in range(n):
+    a = list(map(int,input().strip().split()))
+    g.append(a)
+x= 0
+y = 0
+turno =1
+bfs(g,x,y,turno)
+print(g)
 
