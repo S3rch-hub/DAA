@@ -9,20 +9,19 @@ def isFactible(cantidad,monedas):
 def greedyCoins(cantidad,monedas,solucion):
     indice = 0
     numMonedas=0
-    while not isSol(cantidad):
+    while not isSol(cantidad) and indice < len(monedas):
         if isFactible(cantidad,monedas[indice]):
             solucion[indice]+= 1
             numMonedas += 1
             cantidad -= monedas[indice]
         else:
             indice +=1
-    monedasCambio=[]
+    print(numMonedas)
     for i in range(len(monedas)):
-        if solucion[i] !=0:
-            print()
-    print(f"Numero de monedas totales: ",numMonedas)
+        if solucion[i] > 0:
+            print(f"{monedas[i]}: {solucion[i]}")
 
-    return solucion
+
 
 
 
@@ -36,7 +35,5 @@ cantidad = input()
 cantidad=int(cantidad)
 monedas=list(map(int,input().strip().split()))
 monedas.sort(reverse=True) #Monedas estará odenado de mayor a menor
-print(monedas)
 solucion= [0] * len(monedas)
-sol= greedyCoins(cantidad,monedas,solucion)
-print(sol)
+greedyCoins(cantidad,monedas,solucion)
