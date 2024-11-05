@@ -19,7 +19,6 @@ def bestItem(candidatos,caracteristica,nivelAtraccion,tiempo):
 def greedy(concursantes):
     caracteristica=concursantes[0]
     candidatos = concursantes[3]
-    numParejas = concursantes[2]
     tiempo = concursantes[1]
 
     if caracteristica == 'kindness':
@@ -49,7 +48,7 @@ def greedy(concursantes):
             sol.append(nombre)
             tiempo = 0
         candidatos.remove(best_item)
-    return sol, round(beneficio,2)
+    return sol,beneficio
 
 
 
