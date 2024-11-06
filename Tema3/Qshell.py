@@ -1,27 +1,23 @@
 
 # Objetivo: Maximizar las veces que se encienden las luces de la tentación
 
-def bestItem(candidatos,caracteristica,nivelAtraccion,tiempo):
-    best_candidate= None
-    valorMax = -1
-    tiempoMin =float('inf')
-
+def bestItem(tentadores,candidatos,nivelAtraccion):
+    best_ratio = -1
+    best_candidate = -1
     for i in candidatos:
-        nombre,belleza,inteligencia,amabilidade,tiempoSed = i
-        valor =i[nivelAtraccion]
-        if (valor > valorMax)or (valor == valorMax and tiempoMin < tiempoMin):
-            if tiempoMin <= tiempo:
-                valorMax = valor
-                tiempoMin =tiempoSed
-                best_candidate = i
+        ratio=tentadores[i][nivelAtraccion]/tentadores[i][4]
+        if ratio > best_ratio:
+            best_ratio = ratio
+            best_candidate = i
     return best_candidate
 
 def greedy(concursantes):
     caracteristica=concursantes[0]
-    candidatos = concursantes[3]
+    candidatos = set()
+    n=concursantes[2]
     tiempo = concursantes[1]
 
-    if caracteristica == 'kindness':
+    if caracteristica == 'beauty':
         nivelAtraccion = 1
     elif caracteristica == 'intelligence':
         nivelAtraccion = 2
@@ -31,23 +27,27 @@ def greedy(concursantes):
     beneficio = 0
     sol =[]
 
+    for i in range(n):
+        candidatos.add(i)
 
-    while candidatos and tiempo > 0:
-        best_item= bestItem(candidatos,caracteristica,nivelAtraccion,tiempo)
-        if best_item is None:
-            break
-        nombre,belleza,inteligencia,amabilidad,tiempoSed = best_item
-        valor=best_item[nivelAtraccion]
 
-        if tiempoSed<tiempo:
-            beneficio += valor
-            tiempo -=tiempoSed
-            sol.append(nombre)
+
+    while candidatos and tiempo >0:
+
+        bestCandidato=bestItem(concursantes[3],candidatos,nivelAtraccion)
+        tentador = concursantes[3][bestCandidato]
+
+
+        if tiempo >=tentador[4]:
+            tiempo -= tentador[4]
+            beneficio += tentador[nivelAtraccion]
         else:
-            beneficio += valor * (tiempo/tiempoSed)
-            sol.append(nombre)
+            ratio= tiempo / tentador[4]
             tiempo = 0
-        candidatos.remove(best_item)
+            beneficio += ratio * tentador[nivelAtraccion]
+
+        sol.append(tentador[0])
+        candidatos.remove(bestCandidato)
     return sol,beneficio
 
 
@@ -58,8 +58,9 @@ def greedy(concursantes):
 # Data definition
 n = int(input().strip())
 concursantes = []
+sol=[]
 
-for _ in range(n):
+for i in range(n):
     caracteristica = input().strip()
     tiempoMax = int(input().strip())
     parejas = int(input().strip())
@@ -75,10 +76,14 @@ for _ in range(n):
         tentadores.append([nombre, belleza, inteligencia, amabilidad, tiempoSed])
 
     concursantes.append([caracteristica, tiempoMax, parejas, tentadores])
+    parejas,beneficio = greedy(concursantes[i])
+    sol.append([parejas,beneficio])
+for resultado in range(len(sol)):
+    for pareja in sol[resultado][0]:
+        print(pareja,end="")
+    print()
+    print(f"{sol[resultado][1]:.2f}")
 
-for concursante in concursantes:
-    pareja,beneficio=greedy(concursante)
-    print(" ".join(pareja))
-    print(f"{beneficio:.2f}")
+
 
 
