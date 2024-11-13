@@ -80,7 +80,7 @@ for i in range(n):
     sol.append([parejas,beneficio])
 for resultado in range(len(sol)):
     for pareja in sol[resultado][0]:
-        print(pareja,end="")
+        print(pareja,end=" ")
     print()
     print(f"{sol[resultado][1]:.2f}")
 
