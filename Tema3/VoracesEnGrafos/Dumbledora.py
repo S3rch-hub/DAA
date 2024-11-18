@@ -1,6 +1,6 @@
 # Kruskal  algorithmic defintion
 
-def sortCandidates(g):
+'''def sortCandidates(g):
     candidates =[]
     for adjs in g:
         for start,end,weight in adjs:
@@ -31,7 +31,50 @@ def greedyKruskal(g):
             costes[end] += weight
             updateComponents(components,components[start],components[end])
         i += 1
-    return sol,costes
+    return sol,costes'''
+from random import randint
+# Prim algorithmic definition
+def getBestItem(candidates,visited):
+    bestCandidate = -1
+    minCost = float('inf')
+    for i in range(len(candidates)):
+        if not visited[i] and candidates[i] < minCost:
+            minCost = candidates[i]
+            bestCandidate = i
+    return bestCandidate,minCost
+
+def greedyPrim(g):
+    n = len(g)
+    costeTotal = 0
+    inicial = randint(0,n-1)
+    visited = [False] * n
+    candidates = [float('inf')] * n
+    visited[inicial] = True
+    habitaciones = [0] * n
+    padre = [-1] * n
+
+    for strart,end,weight in g[inicial]:
+        candidates[end] = weight
+        padre[end] = inicial
+    for _ in range(n-1):
+        nextNode,coste = getBestItem(candidates, visited)
+        if coste==float('inf'):
+            break
+
+        costeTotal += coste
+        visited[nextNode] = True
+        if padre[nextNode] != -1:
+            habitaciones[nextNode] += coste
+            habitaciones[padre[nextNode]] += coste
+        for start,end,weight in g[nextNode]:
+            if not visited[end] and weight < candidates[end]:
+                candidates[end] = weight
+                padre[end] = nextNode
+
+    return costeTotal,habitaciones
+
+
+
 
 
 
@@ -45,7 +88,7 @@ for _ in range(m):
     g[a].append((a,b,c))
     g[b].append((b,a,c))
 
-costeTotal,costes = greedyKruskal(g)
-print("Coste total: "+ str(costeTotal))
+precio,costeHabitacion = greedyPrim(g)
+print(f"Coste total: {precio}")
 for i in range(n):
-    print("H"+ str(i) + ": " + str(costes[i]))
+    print(f"H{i}: {costeHabitacion[i]}")
