@@ -37,11 +37,13 @@ ataques.sort()
 for i in range(len(ataques)):
     indice = binarySearch(tablero,ataques[i])
     if indice >= 0:
-        sol[indice] = "X"
+        while indice < len(sol) and sol[indice] =="X":
+            indice +=1
     else:
         indice = -indice -1
-        while indice<len(sol) and i+1 < len(ataques) and tablero[indice] <= ataques[i+1] :
-            sol[indice] = "X"
+        while indice < len(sol) and sol[indice] == "X":
             indice += 1
-print(sol)
+    if indice < len(sol):
+        sol[indice] = "X"
+
 
