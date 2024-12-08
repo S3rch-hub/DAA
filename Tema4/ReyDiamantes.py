@@ -32,7 +32,7 @@ for _ in range(n):
     tablero= tablero + filas
 sol = tablero.copy()
 ataques = list(map(int,input().strip().split()))
-ataques.sort()
+
 
 for i in range(len(ataques)):
     indice = binarySearch(tablero,ataques[i])
@@ -45,5 +45,9 @@ for i in range(len(ataques)):
             indice += 1
     if indice < len(sol):
         sol[indice] = "X"
+
+for i in range(n):
+    print(*(sol[i * n:(i + 1) * n]))
+
 
 
