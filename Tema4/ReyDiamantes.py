@@ -29,22 +29,25 @@ sol =[]
 
 for _ in range(n):
     filas = list(map(int,input().strip().split()))
-    tablero= tablero + filas
+    tablero.extend(filas)
 sol = tablero.copy()
 ataques = list(map(int,input().strip().split()))
+
+ocupados = set()
 
 
 for i in range(len(ataques)):
     indice = binarySearch(tablero,ataques[i])
     if indice >= 0:
-        while indice < len(sol) and sol[indice] =="X":
+        while indice < len(sol) and indice in ocupados:
             indice +=1
     else:
         indice = -indice -1
-        while indice < len(sol) and sol[indice] == "X":
+        while indice < len(sol) and indice in ocupados:
             indice += 1
     if indice < len(sol):
         sol[indice] = "X"
+        ocupados.add(indice)
 
 for i in range(n):
     print(*(sol[i * n:(i + 1) * n]))
