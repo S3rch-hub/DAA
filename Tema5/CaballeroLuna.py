@@ -1,44 +1,51 @@
 
-def esFactible(g,x,y):
-    return g[x][y] != -1
+movimientos = [(0,1),(1,0),(-1,0),(0,-1)]
 
-def backtracking(g,distancia,x,y,derrotados,count):
-    if g[x][y] == 1:
-        derrotados +=1
-    movimientos = [(0,1),(1,0),(-1,0),(0,-1)]
-    while count < distancia:
-        for nx,ny in movimientos:
-            nuevaCasillaX = x+nx
-            nuevaCasillaY = y+ny
-            if 0 <= nuevaCasillaX < len(g) and 0<= nuevaCasillaY < len(g[0]):
-                if esFactible(g,nuevaCasillaX,nuevaCasillaY):
-                    if g[nuevaCasillaX][nuevaCasillaY] == 1:
-                        backtracking(g,distancia,nuevaCasillaX,nuevaCasillaY,derrotados,count+1)
-                    count +=1
-
-    return derrotados
+def esFactible(newPos, visited, matrix, n, m):
+    newX, newY = newPos
+    return 0 <= newX < n and 0 <= newY < m and (newX,newY) not in visited and matrix[newX][newY] != -1
 
 
+
+
+def vueltaAtras(n, m, matrix, e, x, y, d,visited, pos, index = 0,enemigos=0):
+    actX, actY = pos
+
+    if index == d: # El boomerang ya no puede recorrer mas casillas
+        return enemigos==e
+
+    for dx,dy in movimientos:
+        newPos = (dx+actX,dy+actY)
+
+        if esFactible(newPos,visited,matrix,n,m):
+            visited.add(newPos)
+
+            if matrix[dx+actX][dy+actY] == 1:
+                enemigos +=1
+
+            if vueltaAtras(n,m, matrix, e, x, y, d, visited, newPos, index+1, enemigos):
+                return True
+
+            if matrix[dx+actX][dy+actY] == 1: # Si no puedo ir a esa posicion, no me cargo al enemigo
+                enemigos -=1
+            visited.remove(newPos)
 
 
 # Data definition
 
 n,m,e = map(int,input().strip().split())
-g =[]
+matrix =[]
+visited = set()
 
 for i in range(n):
     filas = list(map(int,input().strip().split()))
-    g.append(filas)
+    matrix.append(filas)
 
 
 x,y,d = map(int,input().strip().split())
+visited.add((x,y))
 
-posicionInicialX = x
-posicionInicialY = y
-distancia = d
-derrotados = 0
-count = 0
-
-
-enemigos = backtracking(g,distancia,posicionInicialX,posicionInicialY,derrotados,count)
-print(enemigos)
+if vueltaAtras(n,m,matrix,e,x,y,d,visited,(x,y)):
+    print('ATACA')
+else:
+    print('CORRE')
